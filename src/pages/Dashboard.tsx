@@ -27,14 +27,24 @@ export const Dashboard: React.FC = () => {
     setIsRefreshing(true);
     try {
       const conns = await integrationsApi.getConnections();
-      setConnections(conns);
+      const connList = Array.isArray(conns) ? conns : [];
+      setConnections(connList);
 
-      const invs = await invitesApi.listInvites();
-      setInvites(invs);
+      try {
+        const invs = await invitesApi.listInvites();
+        setInvites(Array.isArray(invs) ? invs : []);
+      } catch {
+        setInvites([]);
+      }
 
-      if (conns.length > 0) {
-        const { logs } = await integrationsApi.getSyncLogs(conns[0]._id, 1, 5);
-        setRecentLogs(logs);
+      if (connList.length > 0) {
+        try {
+          const logsRes = await integrationsApi.getSyncLogs(connList[0]._id, 1, 5);
+          const logsList = logsRes?.logs;
+          setRecentLogs(Array.isArray(logsList) ? logsList : []);
+        } catch {
+          setRecentLogs([]);
+        }
       }
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
