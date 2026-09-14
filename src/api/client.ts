@@ -11,42 +11,9 @@ import {
   CsvTemplate,
   Provider,
   AuthMethod,
-  Contact,
-  Invoice,
-  InvoiceStatus,
-  InvoiceType,
-} from "../types";
+} from '../types';
 
-export interface ContactPayload {
-  name: string;
-  emails: string[];
-  phones: string[];
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    postcode: string;
-    country: string;
-  };
-  paymentTermsDays: number;
-}
-
-export interface InvoicePayload {
-  invoiceNumber: string;
-  invoiceType: InvoiceType;
-  creditNoteNumber?: string;
-  linkedInvoiceIds?: string[];
-  issueDate: string;
-  dueDate: string;
-  total: number;
-  balanceDue: number;
-  currency: string;
-  status: InvoiceStatus;
-  pdfUrl?: string;
-  contactId: string;
-}
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,

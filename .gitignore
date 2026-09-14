@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 
+<<<<<<< HEAD
 # Build output
 dist/
 
@@ -11,13 +12,44 @@ dist/
 
 # Logs
 *.log
+=======
+# Next.js
+.next/
+out/
+
+# Production
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+>>>>>>> 79f7c3c0124b5d840279512f0e77a32f4d4ffe85
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+<<<<<<< HEAD
 # Editor and OS files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+=======
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+>>>>>>> 79f7c3c0124b5d840279512f0e77a32f4d4ffe85
