@@ -1,6 +1,11 @@
-export type Provider = 'xero' | 'myob' | 'quickbooks' | 'csv' | 'generic';
-export type AuthMethod = 'oauth2' | 'api_key' | 'credential';
-export type ConnectionStatus = 'active' | 'error' | 'syncing' | 'disconnected' | 'pending';
+export type Provider = "xero" | "myob" | "quickbooks" | "csv" | "generic";
+export type AuthMethod = "oauth2" | "api_key" | "credential";
+export type ConnectionStatus =
+  | "active"
+  | "error"
+  | "syncing"
+  | "disconnected"
+  | "pending";
 
 export interface User {
   id: string;
@@ -34,7 +39,7 @@ export interface SyncLog {
   orgId: string;
   connectionId: string;
   provider: Provider;
-  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+  status: "pending" | "in_progress" | "completed" | "failed";
   totalRecords?: number;
   syncedRecords?: number;
   failedRecords?: number;
@@ -52,6 +57,55 @@ export interface OrganisationInfo {
   countryCode?: string;
   currencyCode?: string;
   organisationId?: string;
+}
+
+export interface ContactAddress {
+  street?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+}
+
+export interface Contact {
+  _id: string;
+  orgId?: string;
+  name: string;
+  emails: string[];
+  phones: string[];
+  address?: ContactAddress;
+  paymentTermsDays?: number;
+  chaseState?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type InvoiceType = "ACCREC" | "ACCPAY";
+export type InvoiceStatus =
+  | "DRAFT"
+  | "AUTHORISED"
+  | "PAID"
+  | "VOIDED"
+  | "OVERDUE";
+
+export interface Invoice {
+  _id: string;
+  orgId?: string;
+  contactId?: string;
+  invoiceNumber: string;
+  invoiceType: InvoiceType;
+  creditNoteNumber?: string;
+  linkedInvoiceIds?: string[];
+  issueDate: string;
+  dueDate: string;
+  total: number;
+  balanceDue: number;
+  currency: string;
+  status: InvoiceStatus;
+  pdfUrl?: string;
+  chaseState?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CsvUploadResult {
@@ -80,7 +134,7 @@ export interface Invite {
   orgId: string;
   provider: Provider;
   inviteeEmail?: string;
-  status: 'pending' | 'consumed' | 'revoked' | 'expired';
+  status: "pending" | "consumed" | "revoked" | "expired";
   createdByUserId: string;
   createdAt: string;
   expiresAt: string;

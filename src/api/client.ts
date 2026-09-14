@@ -11,11 +11,9 @@ import {
   CsvTemplate,
   Provider,
   AuthMethod,
-} from "../types";
+} from '../types';
 
-import { VITE_API_BASE_URL } from "../../config.ts";
-
-const API_BASE = VITE_API_BASE_URL || "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
@@ -74,6 +72,68 @@ export const authApi = {
 // ── Integrations & Connections Endpoints ─────────────────────────────────────
 
 export const integrationsApi = {
+  getContacts: async (): Promise<Contact[]> => {
+    const res = await apiClient.get<Contact[] | { data: Contact[] }>(
+      "/integrations/contacts",
+    );
+    return Array.isArray(res.data) ? res.data : res.data.data;
+  },
+
+  getContact: async (id: string): Promise<Contact> => {
+    const res = await apiClient.get<Contact>(`/integrations/contacts/${id}`);
+    return res.data;
+  },
+
+  createContact: async (contact: ContactPayload): Promise<Contact> => {
+    const res = await apiClient.post<Contact>(
+      "/integrations/contacts",
+      contact,
+    );
+    return res.data;
+  },
+
+  updateContact: async (
+    id: string,
+    contact: ContactPayload,
+  ): Promise<Contact> => {
+    const res = await apiClient.patch<Contact>(
+      `/integrations/contacts/${id}`,
+      contact,
+    );
+    return res.data;
+  },
+
+  getInvoices: async (): Promise<Invoice[]> => {
+    const res = await apiClient.get<Invoice[] | { data: Invoice[] }>(
+      "/integrations/invoices?page=1&limit=25",
+    );
+    return Array.isArray(res.data) ? res.data : res.data.data;
+  },
+
+  getInvoice: async (id: string): Promise<Invoice> => {
+    const res = await apiClient.get<Invoice>(`/integrations/invoices/${id}`);
+    return res.data;
+  },
+
+  createInvoice: async (invoice: InvoicePayload): Promise<Invoice> => {
+    const res = await apiClient.post<Invoice>(
+      "/integrations/invoices",
+      invoice,
+    );
+    return res.data;
+  },
+
+  updateInvoice: async (
+    id: string,
+    invoice: InvoicePayload,
+  ): Promise<Invoice> => {
+    const res = await apiClient.patch<Invoice>(
+      `/integrations/invoices/${id}`,
+      invoice,
+    );
+    return res.data;
+  },
+
   getConnections: async (): Promise<AccountingConnection[]> => {
     const res = await apiClient.get<AccountingConnection[]>(
       "/integrations/connections",
