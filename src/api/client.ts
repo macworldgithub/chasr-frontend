@@ -115,22 +115,25 @@ export const integrationsApi = {
   },
 
   // OAuth Authorization URLs
-  getXeroAuthUrl: async (): Promise<{ url: string }> => {
-    const res = await apiClient.post<{ url: string }>(
+  getXeroAuthUrl: async (): Promise<{ authUrl?: string; url?: string }> => {
+    const res = await apiClient.post<{ authUrl?: string; url?: string }>(
       "/integrations/connections/xero/auth-url",
     );
     return res.data;
   },
 
-  getMyobAuthUrl: async (): Promise<{ url: string }> => {
-    const res = await apiClient.post<{ url: string }>(
+  getMyobAuthUrl: async (): Promise<{ authUrl?: string; url?: string }> => {
+    const res = await apiClient.post<{ authUrl?: string; url?: string }>(
       "/integrations/connections/myob/auth-url",
     );
     return res.data;
   },
 
-  getQuickBooksAuthUrl: async (): Promise<{ url: string }> => {
-    const res = await apiClient.post<{ url: string }>(
+  getQuickBooksAuthUrl: async (): Promise<{
+    authUrl?: string;
+    url?: string;
+  }> => {
+    const res = await apiClient.post<{ authUrl?: string; url?: string }>(
       "/integrations/connections/quickbooks/auth-url",
     );
     return res.data;

@@ -11,6 +11,7 @@ import { CsvIngest } from './pages/CsvIngest';
 import { Invites } from './pages/Invites';
 import { RedeemInvite } from './pages/RedeemInvite';
 import { SyncLogs } from './pages/SyncLogs';
+import { OAuthCallback } from './pages/OAuthCallback';
 
 const ProtectedLayout: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -49,6 +50,7 @@ export const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/redeem/:token" element={<RedeemInvite />} />
+          <Route path="/oauth/callback" element={<OAuthCallback />} />
 
           {/* Protected Application Routes */}
           <Route element={<ProtectedLayout />}>

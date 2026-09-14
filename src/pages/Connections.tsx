@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -76,7 +77,7 @@ export const Connections: React.FC = () => {
 
   const handleOAuthConnect = async (provider: Provider) => {
     try {
-      let res: { url: string };
+      let res: { authUrl?: string; url?: string };
       if (provider === 'xero') {
         res = await integrationsApi.getXeroAuthUrl();
       } else if (provider === 'myob') {
@@ -85,9 +86,13 @@ export const Connections: React.FC = () => {
         res = await integrationsApi.getQuickBooksAuthUrl();
       }
 
-      if (res.url) {
-        window.location.href = res.url;
+      const authUrl = res.authUrl || res.url;
+      if (authUrl) {
+        window.location.href = authUrl;
+        return;
       }
+
+      alert('OAuth URL not received from the server.');
     } catch (err: any) {
       alert(`OAuth URL Generation Error: ${err.response?.data?.message || err.message}`);
     }
