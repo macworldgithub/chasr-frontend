@@ -1,6 +1,5 @@
-
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Link2,
   RefreshCw,
@@ -19,6 +18,8 @@ import {
   Pencil,
   Plus,
   FileText,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { integrationsApi } from "../api/client";
 import {
@@ -34,6 +35,7 @@ import { ContactModal } from "../components/ContactModal";
 import { InvoiceModal } from "../components/InvoiceModal";
 
 export const Connections: React.FC = () => {
+  const PAGE_SIZE = 10;
   const [connections, setConnections] = useState<AccountingConnection[]>([]);
   const [selectedConnection, setSelectedConnection] =
     useState<AccountingConnection | null>(null);
@@ -55,6 +57,7 @@ export const Connections: React.FC = () => {
   const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [invoiceLoadingId, setInvoiceLoadingId] = useState<string | null>(null);
+  const [dataPage, setDataPage] = useState(1);
 
   // Modals state
   const [xeroTenantModalOpen, setXeroTenantModalOpen] = useState(false);
@@ -129,6 +132,25 @@ export const Connections: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const totalItems =
+      activeDataTab === "contacts" ? contacts.length : invoices.length;
+    const pageCount = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+    setDataPage((page) => Math.min(page, pageCount));
+  }, [activeDataTab, contacts.length, invoices.length]);
+
+  const visibleContacts = contacts.slice(
+    (dataPage - 1) * PAGE_SIZE,
+    dataPage * PAGE_SIZE,
+  );
+  const visibleInvoices = invoices.slice(
+    (dataPage - 1) * PAGE_SIZE,
+    dataPage * PAGE_SIZE,
+  );
+  const totalDataItems =
+    activeDataTab === "contacts" ? contacts.length : invoices.length;
+  const dataPageCount = Math.max(1, Math.ceil(totalDataItems / PAGE_SIZE));
+
   const handleOpenContact = async (contactId: string) => {
     setContactLoadingId(contactId);
     try {
@@ -172,7 +194,7 @@ export const Connections: React.FC = () => {
   const handleOAuthConnect = async (provider: Provider) => {
     try {
       let res: { authUrl?: string; url?: string };
-      if (provider === 'xero') {
+      if (provider === "xero") {
         res = await integrationsApi.getXeroAuthUrl();
       } else if (provider === "myob") {
         res = await integrationsApi.getMyobAuthUrl();
@@ -186,7 +208,7 @@ export const Connections: React.FC = () => {
         return;
       }
 
-      alert('OAuth URL not received from the server.');
+      alert("OAuth URL not received from the server.");
     } catch (err: any) {
       alert(
         `OAuth URL Generation Error: ${err.response?.data?.message || err.message}`,
@@ -379,7 +401,10 @@ export const Connections: React.FC = () => {
       {/* Contacts and Invoices */}
       <div className="flex items-center gap-2 border-b border-dark-border">
         <button
-          onClick={() => setActiveDataTab("contacts")}
+          onClick={() => {
+            setActiveDataTab("contacts");
+            setDataPage(1);
+          }}
           className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${activeDataTab === "contacts" ? "text-cyan-300 border-cyan-400" : "text-slate-400 border-transparent hover:text-white"}`}
         >
           <BookUser className="w-3.5 h-3.5 inline mr-1.5" />
@@ -388,6 +413,7 @@ export const Connections: React.FC = () => {
         <button
           onClick={() => {
             setActiveDataTab("invoices");
+            setDataPage(1);
             if (!invoices.length && !invoicesLoading) fetchInvoices();
           }}
           className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${activeDataTab === "invoices" ? "text-amber-300 border-amber-400" : "text-slate-400 border-transparent hover:text-white"}`}
@@ -436,7 +462,7 @@ export const Connections: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-dark-border/60 text-slate-200">
-                {contacts.map((contact) => (
+                {visibleContacts.map((contact) => (
                   <tr
                     key={contact._id}
                     className="hover:bg-dark-hover/50 transition-colors"
@@ -475,6 +501,33 @@ export const Connections: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+        {!contactsLoading && contacts.length > PAGE_SIZE && (
+          <div className="flex items-center justify-between border-t border-dark-border pt-4">
+            <span className="text-xs text-slate-400">
+              Page {dataPage} of {dataPageCount}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setDataPage((page) => Math.max(1, page - 1))}
+                disabled={dataPage === 1}
+                className="p-1.5 rounded-lg border border-dark-border text-slate-300 hover:text-white hover:bg-dark-hover disabled:opacity-40"
+                title="Previous contacts page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() =>
+                  setDataPage((page) => Math.min(dataPageCount, page + 1))
+                }
+                disabled={dataPage === dataPageCount}
+                className="p-1.5 rounded-lg border border-dark-border text-slate-300 hover:text-white hover:bg-dark-hover disabled:opacity-40"
+                title="Next contacts page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -518,7 +571,7 @@ export const Connections: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-dark-border/60 text-slate-200">
-                {invoices.map((invoice) => {
+                {visibleInvoices.map((invoice) => {
                   const contact = contacts.find(
                     (item) => item._id === invoice.contactId,
                   );
@@ -569,6 +622,33 @@ export const Connections: React.FC = () => {
                 })}
               </tbody>
             </table>
+          </div>
+        )}
+        {!invoicesLoading && invoices.length > PAGE_SIZE && (
+          <div className="flex items-center justify-between border-t border-dark-border pt-4">
+            <span className="text-xs text-slate-400">
+              Page {dataPage} of {dataPageCount}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setDataPage((page) => Math.max(1, page - 1))}
+                disabled={dataPage === 1}
+                className="p-1.5 rounded-lg border border-dark-border text-slate-300 hover:text-white hover:bg-dark-hover disabled:opacity-40"
+                title="Previous invoices page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() =>
+                  setDataPage((page) => Math.min(dataPageCount, page + 1))
+                }
+                disabled={dataPage === dataPageCount}
+                className="p-1.5 rounded-lg border border-dark-border text-slate-300 hover:text-white hover:bg-dark-hover disabled:opacity-40"
+                title="Next invoices page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
       </div>

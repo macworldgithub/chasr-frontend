@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Link2,
   FileSpreadsheet,
@@ -12,9 +12,9 @@ import {
   ArrowUpRight,
   Database,
   Layers,
-} from 'lucide-react';
-import { integrationsApi, invitesApi } from '../api/client';
-import { AccountingConnection, SyncLog, Invite } from '../types';
+} from "lucide-react";
+import { integrationsApi, invitesApi } from "../api/client";
+import { AccountingConnection, SyncLog, Invite } from "../types";
 
 export const Dashboard: React.FC = () => {
   const [connections, setConnections] = useState<AccountingConnection[]>([]);
@@ -39,7 +39,11 @@ export const Dashboard: React.FC = () => {
 
       if (connList.length > 0) {
         try {
-          const logsRes = await integrationsApi.getSyncLogs(connList[0]._id, 1, 5);
+          const logsRes = await integrationsApi.getSyncLogs(
+            connList[0]._id,
+            1,
+            5,
+          );
           const logsList = logsRes?.logs;
           setRecentLogs(Array.isArray(logsList) ? logsList : []);
         } catch {
@@ -47,7 +51,7 @@ export const Dashboard: React.FC = () => {
         }
       }
     } catch (err) {
-      console.error('Error fetching dashboard data:', err);
+      console.error("Error fetching dashboard data:", err);
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -58,15 +62,19 @@ export const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
-  const activeCount = connections.filter((c) => c.status === 'active').length;
-  const pendingInvitesCount = invites.filter((i) => i.status === 'pending').length;
+  const activeCount = connections.filter((c) => c.status === "active").length;
+  const pendingInvitesCount = invites.filter(
+    (i) => i.status === "pending",
+  ).length;
 
   return (
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
       {/* Top Banner Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">Integration Control Center</h1>
+          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+            Integration Control Center
+          </h1>
           <p className="text-sm text-slate-400">
             Real-time accounting synchronization & ledger management engine
           </p>
@@ -77,7 +85,9 @@ export const Dashboard: React.FC = () => {
             disabled={isRefreshing}
             className="flex items-center gap-2 px-4 py-2 rounded-xl glass-panel text-slate-300 hover:text-white hover:border-cyan-500/40 text-xs font-semibold transition-all"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 text-cyan-400 ${isRefreshing ? "animate-spin" : ""}`}
+            />
             Refresh State
           </button>
           <Link
@@ -95,51 +105,71 @@ export const Dashboard: React.FC = () => {
         <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-brand-500/10 rounded-full blur-xl group-hover:bg-brand-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Active Integrations</span>
+            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              Active Integrations
+            </span>
             <div className="p-2 rounded-xl bg-brand-500/20 text-brand-400">
               <Link2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-white">{activeCount} / {connections.length}</div>
+          <div className="text-3xl font-extrabold text-white">
+            {activeCount} / {connections.length}
+          </div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
-            {connections.length > 0 ? `${Math.round((activeCount / connections.length) * 100)}% healthy` : 'No connections'}
+            {connections.length > 0
+              ? `${Math.round((activeCount / connections.length) * 100)}% healthy`
+              : "No connections"}
           </p>
         </div>
 
         <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl group-hover:bg-cyan-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Pending Invites</span>
+            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              Pending Invites
+            </span>
             <div className="p-2 rounded-xl bg-cyan-500/20 text-cyan-400">
               <UserPlus className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-white">{pendingInvitesCount}</div>
-          <p className="text-[11px] text-slate-400 mt-2 font-mono">Bookkeeper tokens sent</p>
+          <div className="text-3xl font-extrabold text-white">
+            {pendingInvitesCount}
+          </div>
+          <p className="text-[11px] text-slate-400 mt-2 font-mono">
+            Bookkeeper tokens sent
+          </p>
         </div>
 
         <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Sync Pipeline</span>
+            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              Sync Pipeline
+            </span>
             <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
               <Activity className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-emerald-400">Online</div>
-          <p className="text-[11px] text-slate-400 mt-2 font-mono">BullMQ Redis Worker</p>
+          <p className="text-[11px] text-slate-400 mt-2 font-mono">
+            BullMQ Redis Worker
+          </p>
         </div>
 
         <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">CSV Engine</span>
+            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+              CSV Engine
+            </span>
             <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
               <FileSpreadsheet className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-white">Ready</div>
-          <p className="text-[11px] text-slate-400 mt-2 font-mono">Xero, MYOB, QB Specs</p>
+          <p className="text-[11px] text-slate-400 mt-2 font-mono">
+            Xero, MYOB, QB Specs
+          </p>
         </div>
       </div>
 
@@ -162,9 +192,12 @@ export const Dashboard: React.FC = () => {
                   <Link2 className="w-4 h-4" />
                 </div>
                 <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Connect Provider <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Connect Provider{" "}
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <p className="text-xs text-slate-400 mt-1">Authenticate Xero, MYOB or QuickBooks</p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Authenticate Xero, MYOB or QuickBooks
+                </p>
               </Link>
 
               <Link
@@ -175,11 +208,14 @@ export const Dashboard: React.FC = () => {
                   <FileSpreadsheet className="w-4 h-4" />
                 </div>
                 <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Upload CSV File <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Upload CSV File{" "}
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <p className="text-xs text-slate-400 mt-1">Map & ingest manual AR data</p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Map & ingest manual AR data
+                </p>
               </Link>
-
+              {/* 
               <Link
                 to="/invites"
                 className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group"
@@ -188,10 +224,13 @@ export const Dashboard: React.FC = () => {
                   <UserPlus className="w-4 h-4" />
                 </div>
                 <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Invite Client <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Invite Client{" "}
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <p className="text-xs text-slate-400 mt-1">Generate guest authorization link</p>
-              </Link>
+                <p className="text-xs text-slate-400 mt-1">
+                  Generate guest authorization link
+                </p>
+              </Link> */}
             </div>
           </div>
 
@@ -202,18 +241,27 @@ export const Dashboard: React.FC = () => {
                 <Database className="w-4 h-4 text-brand-400" />
                 Active Integrations
               </h2>
-              <Link to="/connections" className="text-xs font-semibold text-cyan-400 hover:underline">
+              <Link
+                to="/connections"
+                className="text-xs font-semibold text-cyan-400 hover:underline"
+              >
                 Manage All ({connections.length})
               </Link>
             </div>
 
             {isLoading ? (
-              <div className="py-8 text-center text-xs text-slate-400">Loading integrations...</div>
+              <div className="py-8 text-center text-xs text-slate-400">
+                Loading integrations...
+              </div>
             ) : connections.length === 0 ? (
               <div className="py-10 text-center glass-panel rounded-xl border border-dashed border-dark-border">
                 <Link2 className="w-8 h-8 text-slate-500 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-slate-300">No active connections</p>
-                <p className="text-xs text-slate-400 mt-1 mb-4">Connect Xero, MYOB, or QuickBooks to begin syncing</p>
+                <p className="text-sm font-semibold text-slate-300">
+                  No active connections
+                </p>
+                <p className="text-xs text-slate-400 mt-1 mb-4">
+                  Connect Xero, MYOB, or QuickBooks to begin syncing
+                </p>
                 <Link
                   to="/connections"
                   className="px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-semibold hover:bg-brand-500"
@@ -246,12 +294,12 @@ export const Dashboard: React.FC = () => {
                       <div className="text-right">
                         <span
                           className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium capitalize ${
-                            conn.status === 'active'
-                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                              : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                            conn.status === "active"
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
                           }`}
                         >
-                          {conn.status === 'active' ? (
+                          {conn.status === "active" ? (
                             <CheckCircle2 className="w-3 h-3" />
                           ) : (
                             <AlertCircle className="w-3 h-3" />
@@ -260,7 +308,8 @@ export const Dashboard: React.FC = () => {
                         </span>
                         {conn.lastSyncedAt && (
                           <p className="text-[10px] text-slate-400 mt-1 font-mono">
-                            Synced {new Date(conn.lastSyncedAt).toLocaleTimeString()}
+                            Synced{" "}
+                            {new Date(conn.lastSyncedAt).toLocaleTimeString()}
                           </p>
                         )}
                       </div>
@@ -273,7 +322,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Right Column: Recent Sync Activity Timeline */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl border border-dark-border h-full">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -323,7 +372,7 @@ export const Dashboard: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

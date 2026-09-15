@@ -11,9 +11,34 @@ import {
   CsvTemplate,
   Provider,
   AuthMethod,
-} from '../types';
+  Contact,
+  Invoice,
+} from "../types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+export interface ContactPayload {
+  name: string;
+  emails: string[];
+  phones: string[];
+  address?: Contact["address"];
+  paymentTermsDays: number;
+}
+
+export interface InvoicePayload {
+  invoiceNumber: string;
+  invoiceType: Invoice["invoiceType"];
+  creditNoteNumber?: string;
+  linkedInvoiceIds?: string[];
+  issueDate: string;
+  dueDate: string;
+  total: number;
+  balanceDue: number;
+  currency: string;
+  status: Invoice["status"];
+  pdfUrl?: string;
+  contactId: string;
+}
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
@@ -105,7 +130,7 @@ export const integrationsApi = {
 
   getInvoices: async (): Promise<Invoice[]> => {
     const res = await apiClient.get<Invoice[] | { data: Invoice[] }>(
-      "/integrations/invoices?page=1&limit=25",
+      "/integrations/invoices",
     );
     return Array.isArray(res.data) ? res.data : res.data.data;
   },

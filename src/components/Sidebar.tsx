@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Link2,
@@ -8,15 +8,15 @@ import {
   History,
   Zap,
   Layers,
-} from 'lucide-react';
+} from "lucide-react";
 
 export const Sidebar: React.FC = () => {
   const navItems = [
-    { label: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { label: 'Connections Hub', path: '/connections', icon: Link2 },
-    { label: 'CSV Ingestion', path: '/csv-ingest', icon: FileSpreadsheet },
-    { label: 'Client Invites', path: '/invites', icon: UserPlus },
-    { label: 'Sync Operations', path: '/sync-logs', icon: History },
+    { label: "Dashboard", path: "/", icon: LayoutDashboard },
+    { label: "Connections Hub", path: "/connections", icon: Link2 },
+    { label: "CSV Ingestion", path: "/csv-ingest", icon: FileSpreadsheet },
+    // { label: "Client Invites", path: "/invites", icon: UserPlus },
+    // { label: "Sync Operations", path: "/sync-logs", icon: History },
   ];
 
   return (
@@ -50,8 +50,8 @@ export const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-brand-600/30 to-cyan-500/10 text-white border border-brand-500/40 shadow-glow-cyan'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-dark-hover/70'
+                    ? "bg-gradient-to-r from-brand-600/30 to-cyan-500/10 text-white border border-brand-500/40 shadow-glow-cyan"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-dark-hover/70"
                 }`
               }
             >
@@ -72,7 +72,9 @@ export const Sidebar: React.FC = () => {
           <div className="font-semibold text-slate-200 flex items-center gap-1">
             <Layers className="w-3 h-3 text-cyan-400" /> Engine Active
           </div>
-          <p className="text-[11px] text-slate-400 font-mono">Org Scope Active</p>
+          <p className="text-[11px] text-slate-400 font-mono">
+            Org Scope Active
+          </p>
         </div>
       </div>
     </aside>
