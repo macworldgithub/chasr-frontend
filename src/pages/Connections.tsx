@@ -96,12 +96,21 @@ export const Connections: React.FC = () => {
     }
   };
 
+  const [contactsTotal, setContactsTotal] = useState(0);
+  const [invoicesTotal, setInvoicesTotal] = useState(0);
+
   const fetchContacts = async () => {
     setContactsLoading(true);
     try {
-      setContacts(await integrationsApi.getContacts());
+      const res = await integrationsApi.getContacts({ limit: 100 });
+      const list = Array.isArray(res) ? res : res?.data || [];
+      const total = res?.pagination?.total ?? list.length;
+      setContacts(list);
+      setContactsTotal(total);
     } catch (err) {
       console.error("Failed to load contacts:", err);
+      setContacts([]);
+      setContactsTotal(0);
     } finally {
       setContactsLoading(false);
     }
@@ -110,9 +119,15 @@ export const Connections: React.FC = () => {
   const fetchInvoices = async () => {
     setInvoicesLoading(true);
     try {
-      setInvoices(await integrationsApi.getInvoices());
+      const res = await integrationsApi.getInvoices({ limit: 100 });
+      const list = Array.isArray(res) ? res : res?.data || [];
+      const total = res?.pagination?.total ?? list.length;
+      setInvoices(list);
+      setInvoicesTotal(total);
     } catch (err) {
       console.error("Failed to load invoices:", err);
+      setInvoices([]);
+      setInvoicesTotal(0);
     } finally {
       setInvoicesLoading(false);
     }
@@ -291,12 +306,14 @@ export const Connections: React.FC = () => {
       color: "from-sky-500 to-blue-600",
       desc: "OAuth2 & Multi-Tenant Organization Sync",
     },
+    /*
     {
       name: "MYOB",
       provider: "myob",
       color: "from-purple-500 to-indigo-600",
       desc: "AccountRight & Essentials API Integration",
     },
+    */
     {
       name: "QuickBooks Online",
       provider: "quickbooks",
@@ -429,7 +446,7 @@ export const Connections: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-base font-bold text-white flex items-center gap-2">
             <BookUser className="w-4 h-4 text-cyan-400" />
-            Contacts ({contacts.length})
+            Contacts ({contactsTotal || contacts.length})
           </h2>
           <button
             onClick={handleNewContact}
@@ -538,7 +555,7 @@ export const Connections: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-base font-bold text-white flex items-center gap-2">
             <FileText className="w-4 h-4 text-amber-400" />
-            Invoices ({invoices.length})
+            Invoices ({invoicesTotal || invoices.length})
           </h2>
           <button
             onClick={handleNewInvoice}
@@ -746,7 +763,7 @@ export const Connections: React.FC = () => {
                           : "Never"}
                       </td>
                       <td className="py-4 px-4 text-right space-x-2">
-                        {conn.provider === "xero" && (
+                        {/* {conn.provider === "xero" && (
                           <button
                             onClick={() => handleOpenTenantSelector(conn._id)}
                             className="px-2.5 py-1.5 rounded-lg bg-dark-card border border-dark-border text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-[11px] font-semibold transition-all"
@@ -754,7 +771,7 @@ export const Connections: React.FC = () => {
                           >
                             Tenants
                           </button>
-                        )}
+                        )} */}
                         <button
                           onClick={() => handleTriggerSync(conn._id)}
                           disabled={isSyncing}

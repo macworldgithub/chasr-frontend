@@ -29,16 +29,23 @@ export const SyncLogs: React.FC = () => {
     setIsLoading(true);
     try {
       const conns = await integrationsApi.getConnections();
-      setConnections(conns);
+      const connList = Array.isArray(conns) ? conns : [];
+      setConnections(connList);
 
-      const targetId = selectedConnectionId || conns[0]?._id;
+      const targetId = selectedConnectionId || connList[0]?._id;
       if (targetId) {
-        setSelectedConnectionId(targetId);
-        const { logs: logList } = await integrationsApi.getSyncLogs(targetId);
-        setLogs(logList);
+        if (!selectedConnectionId) {
+          setSelectedConnectionId(targetId);
+        }
+        const res = await integrationsApi.getSyncLogs(targetId);
+        const logList = Array.isArray(res) ? res : res?.logs || [];
+        setLogs(Array.isArray(logList) ? logList : []);
+      } else {
+        setLogs([]);
       }
     } catch (err) {
       console.error('Failed to fetch sync logs:', err);
+      setLogs([]);
     } finally {
       setIsLoading(false);
     }
@@ -48,12 +55,13 @@ export const SyncLogs: React.FC = () => {
     fetchConnectionsAndLogs();
   }, [selectedConnectionId]);
 
-  const filteredLogs = logs.filter((log) => {
+  const filteredLogs = (logs || []).filter((log) => {
+    if (!log) return false;
     const matchesStatus = filterStatus === 'all' || log.status === filterStatus;
     const matchesQuery =
       !searchQuery ||
-      log.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log._id.toLowerCase().includes(searchQuery.toLowerCase());
+      (log.provider && log.provider.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (log._id && log._id.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesStatus && matchesQuery;
   });
 

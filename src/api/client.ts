@@ -97,11 +97,46 @@ export const authApi = {
 // ── Integrations & Connections Endpoints ─────────────────────────────────────
 
 export const integrationsApi = {
-  getContacts: async (): Promise<Contact[]> => {
-    const res = await apiClient.get<Contact[] | { data: Contact[] }>(
-      "/integrations/contacts",
-    );
-    return Array.isArray(res.data) ? res.data : res.data.data;
+  getContacts: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }): Promise<{
+    data: Contact[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
+    const query = new URLSearchParams();
+    if (params?.page) query.append("page", String(params.page));
+    if (params?.limit) query.append("limit", String(params.limit));
+    if (params?.search) query.append("search", params.search);
+    const queryString = query.toString() ? `?${query.toString()}` : "";
+    const res = await apiClient.get<any>(`/integrations/contacts${queryString}`);
+    if (res.data && Array.isArray(res.data.data)) {
+      return {
+        data: res.data.data,
+        pagination: res.data.pagination || {
+          page: 1,
+          limit: res.data.data.length,
+          total: res.data.data.length,
+          totalPages: 1,
+        },
+      };
+    }
+    if (Array.isArray(res.data)) {
+      return {
+        data: res.data,
+        pagination: {
+          page: 1,
+          limit: res.data.length,
+          total: res.data.length,
+          totalPages: 1,
+        },
+      };
+    }
+    return {
+      data: [],
+      pagination: { page: 1, limit: 0, total: 0, totalPages: 0 },
+    };
   },
 
   getContact: async (id: string): Promise<Contact> => {
@@ -128,11 +163,46 @@ export const integrationsApi = {
     return res.data;
   },
 
-  getInvoices: async (): Promise<Invoice[]> => {
-    const res = await apiClient.get<Invoice[] | { data: Invoice[] }>(
-      "/integrations/invoices",
-    );
-    return Array.isArray(res.data) ? res.data : res.data.data;
+  getInvoices: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }): Promise<{
+    data: Invoice[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
+    const query = new URLSearchParams();
+    if (params?.page) query.append("page", String(params.page));
+    if (params?.limit) query.append("limit", String(params.limit));
+    if (params?.search) query.append("search", params.search);
+    const queryString = query.toString() ? `?${query.toString()}` : "";
+    const res = await apiClient.get<any>(`/integrations/invoices${queryString}`);
+    if (res.data && Array.isArray(res.data.data)) {
+      return {
+        data: res.data.data,
+        pagination: res.data.pagination || {
+          page: 1,
+          limit: res.data.data.length,
+          total: res.data.data.length,
+          totalPages: 1,
+        },
+      };
+    }
+    if (Array.isArray(res.data)) {
+      return {
+        data: res.data,
+        pagination: {
+          page: 1,
+          limit: res.data.length,
+          total: res.data.length,
+          totalPages: 1,
+        },
+      };
+    }
+    return {
+      data: [],
+      pagination: { page: 1, limit: 0, total: 0, totalPages: 0 },
+    };
   },
 
   getInvoice: async (id: string): Promise<Invoice> => {
@@ -281,14 +351,16 @@ export const integrationsApi = {
     page = 1,
     limit = 50,
   ): Promise<{ logs: SyncLog[]; total: number; page: number }> => {
-    const res = await apiClient.get<{
-      logs: SyncLog[];
-      total: number;
-      page: number;
-    }>(
+    const res = await apiClient.get<any>(
       `/integrations/connections/${connectionId}/sync-logs?page=${page}&limit=${limit}`,
     );
-    return res.data;
+    if (Array.isArray(res.data)) {
+      return { logs: res.data, total: res.data.length, page };
+    }
+    if (res.data && Array.isArray(res.data.logs)) {
+      return res.data;
+    }
+    return { logs: [], total: 0, page };
   },
 
   getSyncLogDetail: async (logId: string): Promise<SyncLog> => {

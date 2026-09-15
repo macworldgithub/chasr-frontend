@@ -12,13 +12,17 @@ import {
   ArrowUpRight,
   Database,
   Layers,
+  BookUser,
+  FileText,
 } from "lucide-react";
 import { integrationsApi, invitesApi } from "../api/client";
-import { AccountingConnection, SyncLog, Invite } from "../types";
+import { AccountingConnection, SyncLog, Invite, Contact, Invoice } from "../types";
 
 export const Dashboard: React.FC = () => {
   const [connections, setConnections] = useState<AccountingConnection[]>([]);
   const [invites, setInvites] = useState<Invite[]>([]);
+  const [contactsCount, setContactsCount] = useState<number>(0);
+  const [invoicesCount, setInvoicesCount] = useState<number>(0);
   const [recentLogs, setRecentLogs] = useState<SyncLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -26,29 +30,73 @@ export const Dashboard: React.FC = () => {
   const fetchData = async () => {
     setIsRefreshing(true);
     try {
-      const conns = await integrationsApi.getConnections();
-      const connList = Array.isArray(conns) ? conns : [];
+      const [connsRes, invsRes, contactsRes, invoicesRes] =
+        await Promise.allSettled([
+          integrationsApi.getConnections(),
+          invitesApi.listInvites(),
+          integrationsApi.getContacts({ page: 1, limit: 1 }),
+          integrationsApi.getInvoices({ page: 1, limit: 1 }),
+        ]);
+
+      const connList =
+        connsRes.status === "fulfilled" && Array.isArray(connsRes.value)
+          ? connsRes.value
+          : [];
       setConnections(connList);
 
-      try {
-        const invs = await invitesApi.listInvites();
-        setInvites(Array.isArray(invs) ? invs : []);
-      } catch {
-        setInvites([]);
+      const invList =
+        invsRes.status === "fulfilled" && Array.isArray(invsRes.value)
+          ? invsRes.value
+          : [];
+      setInvites(invList);
+
+      if (contactsRes.status === "fulfilled") {
+        const cVal = contactsRes.value;
+        const total =
+          cVal?.pagination?.total ??
+          (Array.isArray(cVal?.data)
+            ? cVal.data.length
+            : Array.isArray(cVal)
+              ? (cVal as any).length
+              : 0);
+        setContactsCount(total);
+      }
+
+      if (invoicesRes.status === "fulfilled") {
+        const iVal = invoicesRes.value;
+        const total =
+          iVal?.pagination?.total ??
+          (Array.isArray(iVal?.data)
+            ? iVal.data.length
+            : Array.isArray(iVal)
+              ? (iVal as any).length
+              : 0);
+        setInvoicesCount(total);
       }
 
       if (connList.length > 0) {
         try {
-          const logsRes = await integrationsApi.getSyncLogs(
-            connList[0]._id,
-            1,
-            5,
+          const logsPromises = connList.map((c) =>
+            integrationsApi
+              .getSyncLogs(c._id, 1, 5)
+              .catch(() => ({ logs: [] })),
           );
-          const logsList = logsRes?.logs;
-          setRecentLogs(Array.isArray(logsList) ? logsList : []);
+          const allLogsRes = await Promise.all(logsPromises);
+          const aggregatedLogs: SyncLog[] = [];
+          for (const res of allLogsRes) {
+            const list = Array.isArray(res) ? res : res?.logs || [];
+            aggregatedLogs.push(...list);
+          }
+          aggregatedLogs.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          );
+          setRecentLogs(aggregatedLogs.slice(0, 5));
         } catch {
           setRecentLogs([]);
         }
+      } else {
+        setRecentLogs([]);
       }
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
@@ -61,11 +109,6 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const activeCount = connections.filter((c) => c.status === "active").length;
-  const pendingInvitesCount = invites.filter(
-    (i) => i.status === "pending",
-  ).length;
 
   return (
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
@@ -106,19 +149,17 @@ export const Dashboard: React.FC = () => {
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-brand-500/10 rounded-full blur-xl group-hover:bg-brand-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
-              Active Integrations
+              Number of Contacts
             </span>
             <div className="p-2 rounded-xl bg-brand-500/20 text-brand-400">
-              <Link2 className="w-4 h-4" />
+              <BookUser className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-white">
-            {activeCount} / {connections.length}
+            {contactsCount}
           </div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
-            {connections.length > 0
-              ? `${Math.round((activeCount / connections.length) * 100)}% healthy`
-              : "No connections"}
+            Total ledger contacts
           </p>
         </div>
 
@@ -126,17 +167,17 @@ export const Dashboard: React.FC = () => {
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl group-hover:bg-cyan-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
-              Pending Invites
+              Number of Invoices
             </span>
             <div className="p-2 rounded-xl bg-cyan-500/20 text-cyan-400">
-              <UserPlus className="w-4 h-4" />
+              <FileText className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-white">
-            {pendingInvitesCount}
+            {invoicesCount}
           </div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
-            Bookkeeper tokens sent
+            Total ledger invoices
           </p>
         </div>
 
@@ -215,7 +256,7 @@ export const Dashboard: React.FC = () => {
                   Map & ingest manual AR data
                 </p>
               </Link>
-              {/* 
+              
               <Link
                 to="/invites"
                 className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group"
@@ -230,7 +271,7 @@ export const Dashboard: React.FC = () => {
                 <p className="text-xs text-slate-400 mt-1">
                   Generate guest authorization link
                 </p>
-              </Link> */}
+              </Link>
             </div>
           </div>
 
@@ -322,14 +363,17 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Right Column: Recent Sync Activity Timeline */}
-        {/* <div className="space-y-6">
+        <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl border border-dark-border h-full">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Clock className="w-4 h-4 text-cyan-400" />
                 Recent Sync Logs
               </h2>
-              <Link to="/sync-logs" className="text-xs font-semibold text-cyan-400 hover:underline">
+              <Link
+                to="/sync-logs"
+                className="text-xs font-semibold text-cyan-400 hover:underline"
+              >
                 View Log History
               </Link>
             </div>
@@ -344,22 +388,25 @@ export const Dashboard: React.FC = () => {
                   <div key={log._id} className="relative pl-7">
                     <div
                       className={`absolute left-1.5 top-1.5 w-3 h-3 rounded-full border-2 border-dark-bg ${
-                        log.status === 'completed'
-                          ? 'bg-emerald-400'
-                          : log.status === 'failed'
-                          ? 'bg-rose-400'
-                          : 'bg-amber-400'
+                        log.status === "completed"
+                          ? "bg-emerald-400"
+                          : log.status === "failed"
+                            ? "bg-rose-400"
+                            : "bg-amber-400"
                       }`}
                     ></div>
                     <div className="p-3 rounded-xl bg-dark-card/50 border border-dark-border/80">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-200 uppercase font-mono">{log.provider}</span>
+                        <span className="font-semibold text-slate-200 uppercase font-mono">
+                          {log.provider}
+                        </span>
                         <span className="text-[10px] text-slate-400 font-mono">
                           {new Date(log.createdAt).toLocaleTimeString()}
                         </span>
                       </div>
                       <p className="text-xs text-slate-400 mt-1 capitalize font-mono">
-                        Status: <span className="text-slate-200">{log.status}</span>
+                        Status:{" "}
+                        <span className="text-slate-200">{log.status}</span>
                       </p>
                       {log.syncedRecords !== undefined && (
                         <p className="text-[11px] text-cyan-400 mt-1 font-mono">
@@ -372,7 +419,7 @@ export const Dashboard: React.FC = () => {
               </div>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
