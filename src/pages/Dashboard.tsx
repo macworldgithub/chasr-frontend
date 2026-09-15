@@ -111,51 +111,51 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 max-w-7xl mx-auto w-full">
       {/* Top Banner Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
             Integration Control Center
           </h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
             Real-time accounting synchronization & ledger management engine
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
           <button
             onClick={fetchData}
             disabled={isRefreshing}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl glass-panel text-slate-300 hover:text-white hover:border-cyan-500/40 text-xs font-semibold transition-all"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl glass-panel text-slate-300 hover:text-white hover:border-cyan-500/40 text-xs font-semibold transition-all"
           >
             <RefreshCw
               className={`w-3.5 h-3.5 text-cyan-400 ${isRefreshing ? "animate-spin" : ""}`}
             />
-            Refresh State
+            <span>Refresh State</span>
           </button>
           <Link
             to="/connections"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan whitespace-nowrap"
           >
             <Link2 className="w-3.5 h-3.5" />
-            Add Connection
+            <span>Add Connection</span>
           </Link>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-brand-500/10 rounded-full blur-xl group-hover:bg-brand-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] sm:text-xs font-mono text-slate-400 uppercase tracking-wider">
               Number of Contacts
             </span>
-            <div className="p-2 rounded-xl bg-brand-500/20 text-brand-400">
+            <div className="p-2 rounded-xl bg-brand-500/20 text-brand-400 shrink-0">
               <BookUser className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {contactsCount}
           </div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
@@ -163,17 +163,17 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl group-hover:bg-cyan-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] sm:text-xs font-mono text-slate-400 uppercase tracking-wider">
               Number of Invoices
             </span>
-            <div className="p-2 rounded-xl bg-cyan-500/20 text-cyan-400">
+            <div className="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 shrink-0">
               <FileText className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {invoicesCount}
           </div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
@@ -181,33 +181,33 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] sm:text-xs font-mono text-slate-400 uppercase tracking-wider">
               Sync Pipeline
             </span>
-            <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+            <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
               <Activity className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-emerald-400">Online</div>
+          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">Online</div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
             BullMQ Redis Worker
           </p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border relative overflow-hidden group">
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition-all"></div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] sm:text-xs font-mono text-slate-400 uppercase tracking-wider">
               CSV Engine
             </span>
-            <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+            <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
               <FileSpreadsheet className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-white">Ready</div>
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">Ready</div>
           <p className="text-[11px] text-slate-400 mt-2 font-mono">
             Xero, MYOB, QB Specs
           </p>
@@ -215,70 +215,76 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Grid Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Left Column: Connections Grid & Actions */}
         <div className="lg:col-span-2 space-y-6">
           {/* Quick Actions Panel */}
-          <div className="glass-panel p-6 rounded-2xl border border-dark-border">
-            <h2 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border">
+            <h2 className="text-sm sm:text-base font-bold text-white mb-4 flex items-center gap-2">
               <Layers className="w-4 h-4 text-cyan-400" />
               Quick Operations
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               <Link
                 to="/connections"
-                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group"
+                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group flex flex-col justify-between"
               >
-                <div className="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center mb-3">
-                  <Link2 className="w-4 h-4" />
+                <div>
+                  <div className="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center mb-3">
+                    <Link2 className="w-4 h-4" />
+                  </div>
+                  <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
+                    <span>Connect Provider</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Authenticate Xero, MYOB or QuickBooks
+                  </p>
                 </div>
-                <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Connect Provider{" "}
-                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <p className="text-xs text-slate-400 mt-1">
-                  Authenticate Xero, MYOB or QuickBooks
-                </p>
               </Link>
 
               <Link
                 to="/csv-ingest"
-                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group"
+                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group flex flex-col justify-between"
               >
-                <div className="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-3">
-                  <FileSpreadsheet className="w-4 h-4" />
+                <div>
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-3">
+                    <FileSpreadsheet className="w-4 h-4" />
+                  </div>
+                  <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
+                    <span>Upload CSV File</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Map & ingest manual AR data
+                  </p>
                 </div>
-                <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Upload CSV File{" "}
-                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <p className="text-xs text-slate-400 mt-1">
-                  Map & ingest manual AR data
-                </p>
               </Link>
               
               <Link
                 to="/invites"
-                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group"
+                className="p-4 rounded-xl glass-panel-hover border border-dark-border text-left group flex flex-col justify-between sm:col-span-2 md:col-span-1"
               >
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <UserPlus className="w-4 h-4" />
+                <div>
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
+                    <UserPlus className="w-4 h-4" />
+                  </div>
+                  <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
+                    <span>Invite Client</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Generate guest authorization link
+                  </p>
                 </div>
-                <div className="font-semibold text-sm text-slate-200 group-hover:text-cyan-400 flex items-center justify-between">
-                  Invite Client{" "}
-                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <p className="text-xs text-slate-400 mt-1">
-                  Generate guest authorization link
-                </p>
               </Link>
             </div>
           </div>
 
           {/* Connected Integrations List */}
-          <div className="glass-panel p-6 rounded-2xl border border-dark-border">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border">
+            <div className="flex items-center justify-between mb-4 sm:mb-5">
+              <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                 <Database className="w-4 h-4 text-brand-400" />
                 Active Integrations
               </h2>
@@ -295,7 +301,7 @@ export const Dashboard: React.FC = () => {
                 Loading integrations...
               </div>
             ) : connections.length === 0 ? (
-              <div className="py-10 text-center glass-panel rounded-xl border border-dashed border-dark-border">
+              <div className="py-8 sm:py-10 px-4 text-center glass-panel rounded-xl border border-dashed border-dark-border">
                 <Link2 className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                 <p className="text-sm font-semibold text-slate-300">
                   No active connections
@@ -305,7 +311,7 @@ export const Dashboard: React.FC = () => {
                 </p>
                 <Link
                   to="/connections"
-                  className="px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-semibold hover:bg-brand-500"
+                  className="inline-block px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-semibold hover:bg-brand-500"
                 >
                   Configure Integration
                 </Link>
@@ -315,45 +321,43 @@ export const Dashboard: React.FC = () => {
                 {connections.slice(0, 4).map((conn) => (
                   <div
                     key={conn._id}
-                    className="p-4 rounded-xl bg-dark-card/60 border border-dark-border flex items-center justify-between"
+                    className="p-3 sm:p-4 rounded-xl bg-dark-card/60 border border-dark-border flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-dark-hover border border-dark-border flex items-center justify-center font-bold text-sm text-cyan-400 uppercase font-mono">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-dark-hover border border-dark-border flex items-center justify-center font-bold text-sm text-cyan-400 uppercase font-mono shrink-0">
                         {conn.provider.slice(0, 2)}
                       </div>
-                      <div>
-                        <div className="font-semibold text-sm text-slate-200 capitalize">
+                      <div className="min-w-0">
+                        <div className="font-semibold text-sm text-slate-200 capitalize truncate">
                           {conn.provider} Integration
                         </div>
-                        <div className="text-xs text-slate-400 font-mono">
+                        <div className="text-xs text-slate-400 font-mono truncate">
                           Method: {conn.authMethod}
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium capitalize ${
-                            conn.status === "active"
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                              : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                          }`}
-                        >
-                          {conn.status === "active" ? (
-                            <CheckCircle2 className="w-3 h-3" />
-                          ) : (
-                            <AlertCircle className="w-3 h-3" />
-                          )}
-                          {conn.status}
-                        </span>
-                        {conn.lastSyncedAt && (
-                          <p className="text-[10px] text-slate-400 mt-1 font-mono">
-                            Synced{" "}
-                            {new Date(conn.lastSyncedAt).toLocaleTimeString()}
-                          </p>
+                    <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                      <span
+                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium capitalize ${
+                          conn.status === "active"
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                        }`}
+                      >
+                        {conn.status === "active" ? (
+                          <CheckCircle2 className="w-3 h-3" />
+                        ) : (
+                          <AlertCircle className="w-3 h-3" />
                         )}
-                      </div>
+                        {conn.status}
+                      </span>
+                      {conn.lastSyncedAt && (
+                        <p className="text-[10px] text-slate-400 font-mono">
+                          Synced{" "}
+                          {new Date(conn.lastSyncedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -364,9 +368,9 @@ export const Dashboard: React.FC = () => {
 
         {/* Right Column: Recent Sync Activity Timeline */}
         <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-2xl border border-dark-border h-full">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border h-full">
+            <div className="flex items-center justify-between mb-4 sm:mb-5">
+              <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                 <Clock className="w-4 h-4 text-cyan-400" />
                 Recent Sync Logs
               </h2>
@@ -374,12 +378,12 @@ export const Dashboard: React.FC = () => {
                 to="/sync-logs"
                 className="text-xs font-semibold text-cyan-400 hover:underline"
               >
-                View Log History
+                View History
               </Link>
             </div>
 
             {recentLogs.length === 0 ? (
-              <div className="py-12 text-center text-xs text-slate-400 font-mono">
+              <div className="py-10 text-center text-xs text-slate-400 font-mono">
                 No sync logs recorded yet.
               </div>
             ) : (
@@ -396,12 +400,12 @@ export const Dashboard: React.FC = () => {
                       }`}
                     ></div>
                     <div className="p-3 rounded-xl bg-dark-card/50 border border-dark-border/80">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-200 uppercase font-mono">
+                      <div className="flex items-center justify-between text-xs gap-2">
+                        <span className="font-semibold text-slate-200 uppercase font-mono truncate">
                           {log.provider}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-mono">
-                          {new Date(log.createdAt).toLocaleTimeString()}
+                        <span className="text-[10px] text-slate-400 font-mono shrink-0">
+                          {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
                       <p className="text-xs text-slate-400 mt-1 capitalize font-mono">

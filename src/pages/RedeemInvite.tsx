@@ -47,18 +47,18 @@ export const RedeemInvite: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md">
         {/* Brand header */}
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-glow-indigo">
-            <Zap className="w-8 h-8 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-glow-indigo">
+            <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-white">Chasr Guest Connect</h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Chasr Guest Connect</h1>
           <p className="text-xs text-slate-400 mt-1">Authorize accounting ledger sync</p>
         </div>
 
-        <div className="glass-panel border border-dark-border/90 rounded-3xl p-8 shadow-glass">
+        <div className="glass-panel border border-dark-border/90 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-glass">
           {isLoading ? (
             <div className="py-8 text-center text-xs text-slate-400">Verifying invite token...</div>
           ) : error ? (
@@ -70,25 +70,25 @@ export const RedeemInvite: React.FC = () => {
               <p className="text-xs text-slate-400">{error}</p>
             </div>
           ) : (
-            <div className="space-y-6">
-              <div className="p-4 rounded-2xl bg-dark-card/80 border border-dark-border space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Target Provider</span>
+            <div className="space-y-5 sm:space-y-6">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-dark-card/80 border border-dark-border space-y-2">
+                <div className="flex items-center justify-between text-xs gap-2">
+                  <span className="text-slate-400 shrink-0">Target Provider</span>
                   <span className="font-bold text-cyan-300 uppercase font-mono">{inviteInfo?.provider}</span>
                 </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Invited By</span>
-                  <span className="font-mono text-slate-200">{inviteInfo?.inviterEmail}</span>
+                <div className="flex items-center justify-between text-xs gap-2">
+                  <span className="text-slate-400 shrink-0">Invited By</span>
+                  <span className="font-mono text-slate-200 truncate">{inviteInfo?.inviterEmail}</span>
                 </div>
                 {inviteInfo?.inviteeEmail && (
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Invitee</span>
-                    <span className="font-mono text-slate-200">{inviteInfo.inviteeEmail}</span>
+                  <div className="flex items-center justify-between text-xs gap-2">
+                    <span className="text-slate-400 shrink-0">Invitee</span>
+                    <span className="font-mono text-slate-200 truncate">{inviteInfo.inviteeEmail}</span>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-[11px] text-cyan-300">
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-[11px] text-cyan-300 leading-relaxed">
                 <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>
                   By clicking connect, you authorise Chasr to perform read/write sync operations with your {inviteInfo?.provider} organization.
@@ -100,8 +100,8 @@ export const RedeemInvite: React.FC = () => {
                 disabled={isConnecting}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white font-bold text-xs hover:opacity-90 transition-all shadow-glow-cyan flex items-center justify-center gap-2"
               >
-                <ExternalLink className="w-4 h-4" />
-                {isConnecting ? 'Redirecting to OAuth...' : `Authorize ${inviteInfo?.provider?.toUpperCase()} Connection`}
+                <ExternalLink className="w-4 h-4 shrink-0" />
+                <span>{isConnecting ? 'Redirecting to OAuth...' : `Authorize ${inviteInfo?.provider?.toUpperCase()} Connection`}</span>
               </button>
             </div>
           )}

@@ -106,21 +106,21 @@ export const InvoiceModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="glass-panel border border-dark-border rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 shadow-glass relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-4">
+      <div className="glass-panel border border-dark-border rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 shadow-glass relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-dark-hover"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-dark-hover"
           title="Close"
         >
           <X className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+        <div className="flex items-center gap-3 mb-5 sm:mb-6 pr-8">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
             <FileText className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-bold text-lg text-white">
+            <h3 className="font-bold text-base sm:text-lg text-white">
               {invoice ? "Update Invoice" : "Create Invoice"}
             </h3>
             <p className="text-xs text-slate-400">
@@ -134,7 +134,7 @@ export const InvoiceModal: React.FC<Props> = ({
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                 Invoice number
@@ -294,18 +294,18 @@ export const InvoiceModal: React.FC<Props> = ({
               placeholder="https://example.com/invoice.pdf"
             />
           </div>
-          <div className="flex items-center justify-end gap-3 pt-3">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !form.contactId}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50 text-center"
             >
               {isSubmitting
                 ? "Saving..."
