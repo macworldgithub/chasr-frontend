@@ -38,7 +38,8 @@ export interface InvoicePayload {
   contactId: string;
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "https://chasr-backend.omnisuiteai.com/";
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
@@ -103,14 +104,21 @@ export const integrationsApi = {
     search?: string;
   }): Promise<{
     data: Contact[];
-    pagination: { page: number; limit: number; total: number; totalPages: number };
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
   }> => {
     const query = new URLSearchParams();
     if (params?.page) query.append("page", String(params.page));
     if (params?.limit) query.append("limit", String(params.limit));
     if (params?.search) query.append("search", params.search);
     const queryString = query.toString() ? `?${query.toString()}` : "";
-    const res = await apiClient.get<any>(`/integrations/contacts${queryString}`);
+    const res = await apiClient.get<any>(
+      `/integrations/contacts${queryString}`,
+    );
     if (res.data && Array.isArray(res.data.data)) {
       return {
         data: res.data.data,
@@ -169,14 +177,21 @@ export const integrationsApi = {
     search?: string;
   }): Promise<{
     data: Invoice[];
-    pagination: { page: number; limit: number; total: number; totalPages: number };
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
   }> => {
     const query = new URLSearchParams();
     if (params?.page) query.append("page", String(params.page));
     if (params?.limit) query.append("limit", String(params.limit));
     if (params?.search) query.append("search", params.search);
     const queryString = query.toString() ? `?${query.toString()}` : "";
-    const res = await apiClient.get<any>(`/integrations/invoices${queryString}`);
+    const res = await apiClient.get<any>(
+      `/integrations/invoices${queryString}`,
+    );
     if (res.data && Array.isArray(res.data.data)) {
       return {
         data: res.data.data,
