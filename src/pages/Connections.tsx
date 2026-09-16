@@ -304,7 +304,7 @@ export const Connections: React.FC = () => {
       name: "Xero",
       provider: "xero",
       color: "from-sky-500 to-blue-600",
-      desc: "OAuth2 & Multi-Tenant Organization Sync",
+      desc: " Multi-Tenant Organization Sync",
     },
     /*
     {
@@ -336,10 +336,10 @@ export const Connections: React.FC = () => {
           <h1 className="text-2xl font-extrabold text-white tracking-tight">
             Accounting Connections
           </h1>
-          <p className="text-sm text-slate-400">
+          {/* <p className="text-sm text-slate-400">
             Connect accounting ledgers via OAuth2, API Credentials, or CSV
             Imports
-          </p>
+          </p> */}
         </div>
         <button
           onClick={fetchConnections}
@@ -399,14 +399,14 @@ export const Connections: React.FC = () => {
                     className="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white font-semibold text-xs hover:opacity-90 transition-all shadow-glow-cyan flex items-center justify-center gap-1.5"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    Connect via OAuth2
+                    Connect with your account
                   </button>
                   <button
                     onClick={() => handleOpenCredentialModal(item.provider)}
                     className="w-full py-2 rounded-xl glass-panel text-slate-300 hover:text-white font-semibold text-[11px] transition-all flex items-center justify-center gap-1.5"
                   >
                     <KeyRound className="w-3.5 h-3.5 text-cyan-400" />
-                    API Key / Credentials
+                    Use login details
                   </button>
                 </div>
               )}
