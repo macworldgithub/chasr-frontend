@@ -115,17 +115,17 @@ export const CsvIngest: React.FC = () => {
   };
 
   return (
-    <div className="p-8 space-y-8 max-w-6xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 max-w-6xl mx-auto w-full">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">CSV Ingestion & Column Mapper</h1>
-        <p className="text-sm text-slate-400">
+        <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">CSV Ingestion & Column Mapper</h1>
+        <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
           Upload accounting CSV exports, map headers to Chasr schema, and dispatch sync job
         </p>
       </div>
 
       {/* Stepper Progress Bar */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
         {[
           { num: 1, title: 'Upload File' },
           { num: 2, title: 'Map Columns' },
@@ -134,7 +134,7 @@ export const CsvIngest: React.FC = () => {
         ].map((s) => (
           <div
             key={s.num}
-            className={`p-3.5 rounded-2xl glass-panel border transition-all flex items-center gap-3 ${
+            className={`p-3 sm:p-3.5 rounded-2xl glass-panel border transition-all flex items-center gap-2.5 sm:gap-3 ${
               step === s.num
                 ? 'border-cyan-500/60 bg-cyan-500/10 text-white shadow-glow-cyan'
                 : step > s.num
@@ -143,7 +143,7 @@ export const CsvIngest: React.FC = () => {
             }`}
           >
             <div
-              className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs ${
+              className={`w-6 h-6 sm:w-7 sm:h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
                 step === s.num
                   ? 'bg-cyan-500 text-black'
                   : step > s.num
@@ -151,9 +151,9 @@ export const CsvIngest: React.FC = () => {
                   : 'bg-dark-card border border-dark-border text-slate-500'
               }`}
             >
-              {step > s.num ? <CheckCircle2 className="w-4 h-4" /> : s.num}
+              {step > s.num ? <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : s.num}
             </div>
-            <span className="font-semibold text-xs">{s.title}</span>
+            <span className="font-semibold text-xs truncate">{s.title}</span>
           </div>
         ))}
       </div>
@@ -161,18 +161,18 @@ export const CsvIngest: React.FC = () => {
       {/* Step 1: Upload File & Pick Templates */}
       {step === 1 && (
         <div className="space-y-6">
-          <div className="glass-panel p-8 rounded-3xl border border-dark-border text-center relative overflow-hidden">
-            <div className="w-16 h-16 rounded-3xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto mb-4">
-              <Upload className="w-8 h-8" />
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-dark-border text-center relative overflow-hidden">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto mb-4">
+              <Upload className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
-            <h2 className="text-lg font-bold text-white mb-1">Select AR CSV Export File</h2>
-            <p className="text-xs text-slate-400 max-w-md mx-auto mb-6">
+            <h2 className="text-base sm:text-lg font-bold text-white mb-1">Select AR CSV Export File</h2>
+            <p className="text-xs text-slate-400 max-w-md mx-auto mb-6 px-2">
               Supports files up to 25MB exported from Xero, MYOB, QuickBooks, or custom ERP systems.
             </p>
 
-            <label className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-bold hover:opacity-90 transition-all cursor-pointer shadow-glow-cyan">
+            <label className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-bold hover:opacity-90 transition-all cursor-pointer shadow-glow-cyan">
               <Upload className="w-4 h-4" />
-              {isUploading ? 'Staging CSV...' : 'Browse & Stage CSV'}
+              <span>{isUploading ? 'Staging CSV...' : 'Browse & Stage CSV'}</span>
               <input
                 type="file"
                 accept=".csv"
@@ -184,7 +184,7 @@ export const CsvIngest: React.FC = () => {
           </div>
 
           {/* Pre-configured Templates Download */}
-          <div className="glass-panel p-6 rounded-2xl border border-dark-border">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border">
             <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
               <Download className="w-3.5 h-3.5 text-cyan-400" />
               Sample Ledger Templates
@@ -195,11 +195,11 @@ export const CsvIngest: React.FC = () => {
                   key={tpl.name}
                   className="p-3.5 rounded-xl bg-dark-card/60 border border-dark-border flex items-center justify-between text-xs"
                 >
-                  <div>
-                    <div className="font-semibold text-slate-200">{tpl.name}</div>
+                  <div className="min-w-0 pr-2">
+                    <div className="font-semibold text-slate-200 truncate">{tpl.name}</div>
                     <div className="text-[10px] text-slate-400 font-mono capitalize">{tpl.provider} Spec</div>
                   </div>
-                  <FileSpreadsheet className="w-4 h-4 text-cyan-400" />
+                  <FileSpreadsheet className="w-4 h-4 text-cyan-400 shrink-0" />
                 </div>
               ))}
             </div>
@@ -209,15 +209,15 @@ export const CsvIngest: React.FC = () => {
 
       {/* Step 2: Interactive Column Mapper Matrix */}
       {step === 2 && uploadResult && (
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border space-y-6">
-          <div className="flex items-center justify-between">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                 <Layers className="w-4 h-4 text-cyan-400" />
                 Column Mapping Matrix
               </h2>
-              <p className="text-xs text-slate-400">
-                Uploaded File: <span className="font-mono text-cyan-300">{file?.name}</span> ({uploadResult.totalRows} rows detected)
+              <p className="text-xs text-slate-400 mt-0.5">
+                Uploaded: <span className="font-mono text-cyan-300">{file?.name}</span> ({uploadResult.totalRows} rows)
               </p>
             </div>
 
@@ -225,8 +225,8 @@ export const CsvIngest: React.FC = () => {
               type="text"
               value={templateName}
               onChange={(e) => setTemplateName(e.target.value)}
-              placeholder="Save as Template Name (Optional)"
-              className="px-3.5 py-1.5 rounded-xl bg-dark-card border border-dark-border text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
+              placeholder="Save Template Name (Optional)"
+              className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-dark-card border border-dark-border text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
             />
           </div>
 
@@ -237,7 +237,7 @@ export const CsvIngest: React.FC = () => {
               return (
                 <div
                   key={field.key}
-                  className="p-4 rounded-xl bg-dark-card/60 border border-dark-border flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-3.5 sm:p-4 rounded-xl bg-dark-card/60 border border-dark-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
                 >
                   <div>
                     <div className="font-semibold text-xs text-white flex items-center gap-1.5">
@@ -247,16 +247,16 @@ export const CsvIngest: React.FC = () => {
                     <span className="text-[11px] font-mono text-slate-400">Chasr Field: {field.key}</span>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <ArrowRight className="w-4 h-4 text-slate-500 hidden sm:block" />
+                  <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                    <ArrowRight className="w-4 h-4 text-slate-500 hidden sm:block shrink-0" />
                     <select
                       value={currentMapping?.sourceColumn || ''}
                       onChange={(e) => handleMappingChange(field.key, e.target.value)}
-                      className="px-3.5 py-2 rounded-xl bg-dark-bg border border-dark-border text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-500 min-w-[200px]"
+                      className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-dark-bg border border-dark-border text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-500 sm:min-w-[220px]"
                     >
                       {uploadResult.headers.map((hdr) => (
                         <option key={hdr} value={hdr}>
-                          CSV Column: {hdr}
+                          CSV: {hdr}
                         </option>
                       ))}
                     </select>
@@ -266,19 +266,19 @@ export const CsvIngest: React.FC = () => {
             })}
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-dark-border">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-dark-border">
             <button
               onClick={() => setStep(1)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white text-center"
             >
               Back to Upload
             </button>
             <button
               onClick={handleValidateMappings}
               disabled={isValidating}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan flex items-center justify-center gap-2"
             >
-              {isValidating ? 'Validating...' : 'Validate Dataset'}
+              <span>{isValidating ? 'Validating...' : 'Validate Dataset'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -287,38 +287,38 @@ export const CsvIngest: React.FC = () => {
 
       {/* Step 3: Dataset Validation Results */}
       {step === 3 && validation && (
-        <div className="glass-panel p-6 rounded-2xl border border-dark-border space-y-6">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+        <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border space-y-6">
+          <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
             <FileCheck className="w-4 h-4 text-emerald-400" />
             Validation Results
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <div className="p-4 rounded-xl bg-dark-card border border-dark-border">
               <div className="text-xs text-slate-400 font-mono">Total Rows</div>
-              <div className="text-2xl font-bold text-white">{validation.totalRows}</div>
+              <div className="text-xl sm:text-2xl font-bold text-white">{validation.totalRows}</div>
             </div>
 
             <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
               <div className="text-xs text-emerald-400 font-mono">Valid Rows</div>
-              <div className="text-2xl font-bold text-emerald-300">{validation.validRows}</div>
+              <div className="text-xl sm:text-2xl font-bold text-emerald-300">{validation.validRows}</div>
             </div>
 
             <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
               <div className="text-xs text-rose-400 font-mono">Row Errors</div>
-              <div className="text-2xl font-bold text-rose-300">{validation.errors.length}</div>
+              <div className="text-xl sm:text-2xl font-bold text-rose-300">{validation.errors.length}</div>
             </div>
           </div>
 
           {validation.errors.length > 0 && (
             <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 space-y-2">
               <div className="font-semibold text-xs text-rose-300 flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4" />
+                <AlertTriangle className="w-4 h-4 shrink-0" />
                 Validation Warnings & Parse Errors:
               </div>
               <ul className="text-[11px] font-mono text-rose-200 space-y-1 max-h-40 overflow-y-auto">
                 {validation.errors.map((err, idx) => (
-                  <li key={idx}>
+                  <li key={idx} className="break-all">
                     Row {err.row}: <span className="font-bold">{err.field}</span> — {err.message}
                   </li>
                 ))}
@@ -326,19 +326,19 @@ export const CsvIngest: React.FC = () => {
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-dark-border">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-dark-border">
             <button
               onClick={() => setStep(2)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white text-center"
             >
               Re-map Columns
             </button>
             <button
               onClick={handleCommitUpload}
               disabled={isCommitting || validation.validRows === 0}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan flex items-center gap-2 disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 shadow-glow-cyan flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isCommitting ? 'Committing...' : 'Commit & Ingest Dataset'}
+              <span>{isCommitting ? 'Committing...' : 'Commit & Ingest Dataset'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -347,25 +347,25 @@ export const CsvIngest: React.FC = () => {
 
       {/* Step 4: Success & Queue Confirmation */}
       {step === 4 && (
-        <div className="glass-panel p-8 rounded-3xl border border-dark-border text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-glow-cyan">
-            <CheckCircle2 className="w-8 h-8" />
+        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-dark-border text-center space-y-4">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-glow-cyan">
+            <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
-          <h2 className="text-xl font-bold text-white">CSV Sync Dispatched!</h2>
-          <p className="text-xs text-slate-400 max-w-md mx-auto">
-            Job ID <span className="font-mono text-cyan-300">{commitJobId}</span> has been queued into BullMQ. Your CSV ledger entries are now syncing into Chasr.
+          <h2 className="text-lg sm:text-xl font-bold text-white">CSV Sync Dispatched!</h2>
+          <p className="text-xs text-slate-400 max-w-md mx-auto px-2">
+            Job ID <span className="font-mono text-cyan-300 break-all">{commitJobId}</span> has been queued into BullMQ. Your CSV ledger entries are now syncing into Chasr.
           </p>
 
-          <div className="pt-4 flex items-center justify-center gap-4">
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <button
               onClick={() => setStep(1)}
-              className="px-5 py-2.5 rounded-xl glass-panel text-slate-300 hover:text-white text-xs font-semibold"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl glass-panel text-slate-300 hover:text-white text-xs font-semibold"
             >
               Upload Another CSV
             </button>
             <a
               href="/sync-logs"
-              className="px-5 py-2.5 rounded-xl bg-brand-600 text-white text-xs font-semibold hover:bg-brand-500 shadow-glow-indigo"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-brand-600 text-white text-xs font-semibold hover:bg-brand-500 shadow-glow-indigo text-center"
             >
               Monitor Sync Operations
             </a>

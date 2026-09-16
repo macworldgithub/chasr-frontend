@@ -40,8 +40,8 @@ export const XeroTenantModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="glass-panel border border-dark-border rounded-2xl w-full max-w-md p-6 shadow-glass relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4">
+      <div className="glass-panel border border-dark-border rounded-2xl w-full max-w-md p-4 sm:p-6 shadow-glass relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-dark-hover"
@@ -50,11 +50,11 @@ export const XeroTenantModal: React.FC<Props> = ({
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
             <Building className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-bold text-lg text-white">Select Xero Organisation</h3>
+            <h3 className="font-bold text-base sm:text-lg text-white">Select Xero Organisation</h3>
             <p className="text-xs text-slate-400">Choose which tenant to sync with Chasr</p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export const XeroTenantModal: React.FC<Props> = ({
             {tenants.map((t) => (
               <label
                 key={t.id}
-                className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-3 sm:p-3.5 rounded-xl border cursor-pointer transition-all ${
                   selectedId === t.id
                     ? 'bg-cyan-500/10 border-cyan-500/50 text-white shadow-glow-cyan'
                     : 'bg-dark-card/50 border-dark-border text-slate-300 hover:bg-dark-hover'
@@ -85,25 +85,25 @@ export const XeroTenantModal: React.FC<Props> = ({
                     onChange={() => setSelectedId(t.id)}
                     className="hidden"
                   />
-                  <span className="font-medium text-sm">{t.name}</span>
+                  <span className="font-medium text-xs sm:text-sm">{t.name}</span>
                 </div>
-                {selectedId === t.id && <CheckCircle2 className="w-4 h-4 text-cyan-400" />}
+                {selectedId === t.id && <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />}
               </label>
             ))}
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white"
+              className="px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white text-center hover:bg-dark-hover/50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !selectedId}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50 shadow-glow-cyan"
+              className="px-5 py-2.5 sm:py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 disabled:opacity-50 shadow-glow-cyan text-center"
             >
               {isSubmitting ? 'Confirming...' : 'Select & Sync'}
             </button>

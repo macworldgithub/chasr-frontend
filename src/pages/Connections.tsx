@@ -329,31 +329,30 @@ export const Connections: React.FC = () => {
   ];
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 max-w-7xl mx-auto w-full">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
             Accounting Connections
           </h1>
-          {/* <p className="text-sm text-slate-400">
-            Connect accounting ledgers via OAuth2, API Credentials, or CSV
-            Imports
+          {/* <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+            Connect accounting ledgers via OAuth2, API Credentials, or CSV Imports
           </p> */}
         </div>
         <button
           onClick={fetchConnections}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl glass-panel text-slate-300 hover:text-white text-xs font-semibold"
+          className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 rounded-xl glass-panel text-slate-300 hover:text-white text-xs font-semibold"
         >
           <RefreshCw
             className={`w-3.5 h-3.5 text-cyan-400 ${isLoading ? "animate-spin" : ""}`}
           />
-          Refresh Connections
+          <span>Refresh Connections</span>
         </button>
       </div>
 
       {/* Integration Provider Connect Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {providersConfig.map((item) => {
           const isConnected = connections.some(
             (c) => c.provider === item.provider,
@@ -361,11 +360,11 @@ export const Connections: React.FC = () => {
           return (
             <div
               key={item.provider}
-              className="glass-panel p-6 rounded-2xl border border-dark-border flex flex-col justify-between relative overflow-hidden group"
+              className="glass-panel p-5 sm:p-6 rounded-2xl border border-dark-border flex flex-col justify-between relative overflow-hidden group"
             >
               <div>
                 <div
-                  className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white font-extrabold text-lg mb-4 shadow-lg`}
+                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white font-extrabold text-lg mb-4 shadow-lg`}
                 >
                   {item.name[0]}
                 </div>
@@ -415,14 +414,14 @@ export const Connections: React.FC = () => {
         })}
       </div>
 
-      {/* Contacts and Invoices */}
-      <div className="flex items-center gap-2 border-b border-dark-border">
+      {/* Contacts and Invoices Tabs */}
+      <div className="flex items-center gap-2 border-b border-dark-border overflow-x-auto">
         <button
           onClick={() => {
             setActiveDataTab("contacts");
             setDataPage(1);
           }}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${activeDataTab === "contacts" ? "text-cyan-300 border-cyan-400" : "text-slate-400 border-transparent hover:text-white"}`}
+          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap ${activeDataTab === "contacts" ? "text-cyan-300 border-cyan-400" : "text-slate-400 border-transparent hover:text-white"}`}
         >
           <BookUser className="w-3.5 h-3.5 inline mr-1.5" />
           Contacts
@@ -433,7 +432,7 @@ export const Connections: React.FC = () => {
             setDataPage(1);
             if (!invoices.length && !invoicesLoading) fetchInvoices();
           }}
-          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${activeDataTab === "invoices" ? "text-amber-300 border-amber-400" : "text-slate-400 border-transparent hover:text-white"}`}
+          className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors whitespace-nowrap ${activeDataTab === "invoices" ? "text-amber-300 border-amber-400" : "text-slate-400 border-transparent hover:text-white"}`}
         >
           <FileText className="w-3.5 h-3.5 inline mr-1.5" />
           Invoices
@@ -441,16 +440,16 @@ export const Connections: React.FC = () => {
       </div>
 
       <div
-        className={`glass-panel p-6 rounded-2xl border border-dark-border space-y-4 ${activeDataTab !== "contacts" ? "hidden" : ""}`}
+        className={`glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border space-y-4 ${activeDataTab !== "contacts" ? "hidden" : ""}`}
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
             <BookUser className="w-4 h-4 text-cyan-400" />
             Contacts ({contactsTotal || contacts.length})
           </h2>
           <button
             onClick={handleNewContact}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-cyan-500 text-white text-xs font-semibold hover:opacity-90 self-start sm:self-auto"
           >
             <Plus className="w-3.5 h-3.5" />
             Add Contact
@@ -467,61 +466,73 @@ export const Connections: React.FC = () => {
             No contacts found. Add your first contact to get started.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
-                  <th className="pb-3 px-4">Name</th>
-                  <th className="pb-3 px-4">Email</th>
-                  <th className="pb-3 px-4">Phone</th>
-                  <th className="pb-3 px-4">Payment Terms</th>
-                  <th className="pb-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-dark-border/60 text-slate-200">
-                {visibleContacts.map((contact) => (
-                  <tr
-                    key={contact._id}
-                    className="hover:bg-dark-hover/50 transition-colors"
-                  >
-                    <td className="py-3 px-4">
-                      <button
-                        onClick={() => handleOpenContact(contact._id)}
-                        disabled={contactLoadingId === contact._id}
-                        className="font-semibold text-cyan-300 hover:text-cyan-200 hover:underline disabled:opacity-50"
-                      >
-                        {contactLoadingId === contact._id
-                          ? "Loading..."
-                          : contact.name}
-                      </button>
-                    </td>
-                    <td className="py-3 px-4 text-slate-400">
-                      {contact.emails?.join(", ") || "-"}
-                    </td>
-                    <td className="py-3 px-4 text-slate-400">
-                      {contact.phones?.join(", ") || "-"}
-                    </td>
-                    <td className="py-3 px-4 text-slate-400">
-                      {contact.paymentTermsDays ?? 0} days
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => handleOpenContact(contact._id)}
-                        disabled={contactLoadingId === contact._id}
-                        className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 disabled:opacity-50"
-                        title="Update contact"
-                      >
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+              <table className="min-w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Name
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Email
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Phone
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Payment Terms
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 text-right whitespace-nowrap">
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-dark-border/60 text-slate-200">
+                  {visibleContacts.map((contact) => (
+                    <tr
+                      key={contact._id}
+                      className="hover:bg-dark-hover/50 transition-colors"
+                    >
+                      <td className="py-3 px-3 sm:px-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handleOpenContact(contact._id)}
+                          disabled={contactLoadingId === contact._id}
+                          className="font-semibold text-cyan-300 hover:text-cyan-200 hover:underline disabled:opacity-50"
+                        >
+                          {contactLoadingId === contact._id
+                            ? "Loading..."
+                            : contact.name}
+                        </button>
+                      </td>
+                      <td className="py-3 px-3 sm:px-4 text-slate-400 whitespace-nowrap">
+                        {contact.emails?.join(", ") || "-"}
+                      </td>
+                      <td className="py-3 px-3 sm:px-4 text-slate-400 whitespace-nowrap">
+                        {contact.phones?.join(", ") || "-"}
+                      </td>
+                      <td className="py-3 px-3 sm:px-4 text-slate-400 whitespace-nowrap">
+                        {contact.paymentTermsDays ?? 0} days
+                      </td>
+                      <td className="py-3 px-3 sm:px-4 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => handleOpenContact(contact._id)}
+                          disabled={contactLoadingId === contact._id}
+                          className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 disabled:opacity-50"
+                          title="Update contact"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
         {!contactsLoading && contacts.length > PAGE_SIZE && (
-          <div className="flex items-center justify-between border-t border-dark-border pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-dark-border pt-4">
             <span className="text-xs text-slate-400">
               Page {dataPage} of {dataPageCount}
             </span>
@@ -550,16 +561,16 @@ export const Connections: React.FC = () => {
       </div>
 
       <div
-        className={`glass-panel p-6 rounded-2xl border border-dark-border space-y-4 ${activeDataTab !== "invoices" ? "hidden" : ""}`}
+        className={`glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border space-y-4 ${activeDataTab !== "invoices" ? "hidden" : ""}`}
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
             <FileText className="w-4 h-4 text-amber-400" />
             Invoices ({invoicesTotal || invoices.length})
           </h2>
           <button
             onClick={handleNewInvoice}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:opacity-90"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-semibold hover:opacity-90 self-start sm:self-auto"
           >
             <Plus className="w-3.5 h-3.5" />
             Add Invoice
@@ -575,74 +586,88 @@ export const Connections: React.FC = () => {
             No invoices found. Add your first invoice to get started.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
-                  <th className="pb-3 px-4">Invoice</th>
-                  <th className="pb-3 px-4">Contact</th>
-                  <th className="pb-3 px-4">Due Date</th>
-                  <th className="pb-3 px-4">Total</th>
-                  <th className="pb-3 px-4">Status</th>
-                  <th className="pb-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-dark-border/60 text-slate-200">
-                {visibleInvoices.map((invoice) => {
-                  const contact = contacts.find(
-                    (item) => item._id === invoice.contactId,
-                  );
-                  return (
-                    <tr
-                      key={invoice._id}
-                      className="hover:bg-dark-hover/50 transition-colors"
-                    >
-                      <td className="py-3 px-4">
-                        <button
-                          onClick={() => handleOpenInvoice(invoice._id)}
-                          disabled={invoiceLoadingId === invoice._id}
-                          className="font-semibold text-amber-300 hover:text-amber-200 hover:underline disabled:opacity-50"
-                        >
-                          {invoiceLoadingId === invoice._id
-                            ? "Loading..."
-                            : invoice.invoiceNumber}
-                        </button>
-                      </td>
-                      <td className="py-3 px-4 text-slate-400">
-                        {contact?.name || invoice.contactId || "-"}
-                      </td>
-                      <td className="py-3 px-4 text-slate-400">
-                        {invoice.dueDate
-                          ? new Date(invoice.dueDate).toLocaleDateString()
-                          : "-"}
-                      </td>
-                      <td className="py-3 px-4 text-slate-300">
-                        {invoice.currency} {invoice.total.toFixed(2)}
-                      </td>
-                      <td className="py-3 px-4">
-                        <span className="px-2 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-300 text-[10px] font-semibold">
-                          {invoice.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <button
-                          onClick={() => handleOpenInvoice(invoice._id)}
-                          disabled={invoiceLoadingId === invoice._id}
-                          className="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
-                          title="Update invoice"
-                        >
-                          <Pencil className="w-3.5 h-3.5" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+              <table className="min-w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Invoice
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Contact
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Due Date
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Total
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Status
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 text-right whitespace-nowrap">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-dark-border/60 text-slate-200">
+                  {visibleInvoices.map((invoice) => {
+                    const contact = contacts.find(
+                      (item) => item._id === invoice.contactId,
+                    );
+                    return (
+                      <tr
+                        key={invoice._id}
+                        className="hover:bg-dark-hover/50 transition-colors"
+                      >
+                        <td className="py-3 px-3 sm:px-4 whitespace-nowrap">
+                          <button
+                            onClick={() => handleOpenInvoice(invoice._id)}
+                            disabled={invoiceLoadingId === invoice._id}
+                            className="font-semibold text-amber-300 hover:text-amber-200 hover:underline disabled:opacity-50"
+                          >
+                            {invoiceLoadingId === invoice._id
+                              ? "Loading..."
+                              : invoice.invoiceNumber}
+                          </button>
+                        </td>
+                        <td className="py-3 px-3 sm:px-4 text-slate-400 whitespace-nowrap">
+                          {contact?.name || invoice.contactId || "-"}
+                        </td>
+                        <td className="py-3 px-3 sm:px-4 text-slate-400 whitespace-nowrap">
+                          {invoice.dueDate
+                            ? new Date(invoice.dueDate).toLocaleDateString()
+                            : "-"}
+                        </td>
+                        <td className="py-3 px-3 sm:px-4 text-slate-300 whitespace-nowrap">
+                          {invoice.currency} {invoice.total.toFixed(2)}
+                        </td>
+                        <td className="py-3 px-3 sm:px-4 whitespace-nowrap">
+                          <span className="px-2 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-300 text-[10px] font-semibold">
+                            {invoice.status}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 sm:px-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => handleOpenInvoice(invoice._id)}
+                            disabled={invoiceLoadingId === invoice._id}
+                            className="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
+                            title="Update invoice"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
         {!invoicesLoading && invoices.length > PAGE_SIZE && (
-          <div className="flex items-center justify-between border-t border-dark-border pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-dark-border pt-4">
             <span className="text-xs text-slate-400">
               Page {dataPage} of {dataPageCount}
             </span>
@@ -671,9 +696,9 @@ export const Connections: React.FC = () => {
       </div>
 
       {/* Active Connections Data Table */}
-      <div className="glass-panel p-6 rounded-2xl border border-dark-border space-y-4">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-dark-border space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
             <Layers className="w-4 h-4 text-cyan-400" />
             Configured Integration Channels ({connections.length})
           </h2>
@@ -685,116 +710,126 @@ export const Connections: React.FC = () => {
             Loading active connections...
           </div>
         ) : connections.length === 0 ? (
-          <div className="py-12 text-center text-xs text-slate-400 font-mono border border-dashed border-dark-border rounded-xl">
+          <div className="py-8 sm:py-12 px-4 text-center text-xs text-slate-400 font-mono border border-dashed border-dark-border rounded-xl">
             No active connections configured. Click an OAuth or Credential
             button above to connect your accounting ledger.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
-                  <th className="pb-3 px-4">Provider</th>
-                  <th className="pb-3 px-4">Auth Type</th>
-                  <th className="pb-3 px-4">Organization / Tenant</th>
-                  <th className="pb-3 px-4">Status</th>
-                  <th className="pb-3 px-4">Last Synced</th>
-                  <th className="pb-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-dark-border/60 text-slate-200 font-sans">
-                {connections.map((conn) => {
-                  const org = orgInfoMap[conn._id];
-                  const isSyncing = syncingMap[conn._id];
-                  return (
-                    <tr
-                      key={conn._id}
-                      className="hover:bg-dark-hover/50 transition-colors"
-                    >
-                      <td className="py-4 px-4 font-semibold capitalize flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-lg bg-dark-card border border-dark-border flex items-center justify-center font-mono text-cyan-400 uppercase text-xs">
-                          {conn.provider.slice(0, 2)}
-                        </span>
-                        {conn.provider}
-                      </td>
-                      <td className="py-4 px-4 font-mono text-slate-400">
-                        {conn.authMethod}
-                      </td>
-                      <td className="py-4 px-4 font-mono">
-                        {org ? (
-                          <div className="flex items-center gap-1.5 text-cyan-300 font-semibold">
-                            <Building className="w-3.5 h-3.5" />
-                            {org.name}
-                            {org.currencyCode && (
-                              <span className="text-[10px] text-slate-400">
-                                ({org.currencyCode})
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+              <table className="min-w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-dark-border text-slate-400 font-mono uppercase tracking-wider text-[11px]">
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Provider
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Auth Type
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Organization / Tenant
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Status
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 whitespace-nowrap">
+                      Last Synced
+                    </th>
+                    <th className="pb-3 px-3 sm:px-4 text-right whitespace-nowrap">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-dark-border/60 text-slate-200 font-sans">
+                  {connections.map((conn) => {
+                    const org = orgInfoMap[conn._id];
+                    const isSyncing = syncingMap[conn._id];
+                    return (
+                      <tr
+                        key={conn._id}
+                        className="hover:bg-dark-hover/50 transition-colors"
+                      >
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-semibold capitalize flex items-center gap-2 whitespace-nowrap">
+                          <span className="w-7 h-7 rounded-lg bg-dark-card border border-dark-border flex items-center justify-center font-mono text-cyan-400 uppercase text-xs shrink-0">
+                            {conn.provider.slice(0, 2)}
+                          </span>
+                          <span>{conn.provider}</span>
+                        </td>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-mono text-slate-400 whitespace-nowrap">
+                          {conn.authMethod}
+                        </td>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-mono whitespace-nowrap">
+                          {org ? (
+                            <div className="flex items-center gap-1.5 text-cyan-300 font-semibold">
+                              <Building className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate max-w-[150px] sm:max-w-[200px]">
+                                {org.name}
                               </span>
-                            )}
-                          </div>
-                        ) : conn.activeTenantId ? (
-                          <span className="text-slate-300">
-                            Tenant: {conn.activeTenantId}
-                          </span>
-                        ) : (
-                          <span className="text-slate-500 italic">
-                            No tenant assigned
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-4 px-4">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold capitalize ${
-                            conn.status === "active"
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                              : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                          }`}
-                        >
-                          {conn.status === "active" ? (
-                            <CheckCircle2 className="w-3 h-3" />
+                              {org.currencyCode && (
+                                <span className="text-[10px] text-slate-400">
+                                  ({org.currencyCode})
+                                </span>
+                              )}
+                            </div>
+                          ) : conn.activeTenantId ? (
+                            <span className="text-slate-300">
+                              Tenant: {conn.activeTenantId}
+                            </span>
                           ) : (
-                            <AlertCircle className="w-3 h-3" />
+                            <span className="text-slate-500 italic">
+                              No tenant assigned
+                            </span>
                           )}
-                          {conn.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 font-mono text-slate-400">
-                        {conn.lastSyncedAt
-                          ? new Date(conn.lastSyncedAt).toLocaleString()
-                          : "Never"}
-                      </td>
-                      <td className="py-4 px-4 text-right space-x-2">
-                        {/* {conn.provider === "xero" && (
-                          <button
-                            onClick={() => handleOpenTenantSelector(conn._id)}
-                            className="px-2.5 py-1.5 rounded-lg bg-dark-card border border-dark-border text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-[11px] font-semibold transition-all"
-                            title="Select Active Tenant"
+                        </td>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold capitalize ${
+                              conn.status === "active"
+                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                            }`}
                           >
-                            Tenants
+                            {conn.status === "active" ? (
+                              <CheckCircle2 className="w-3 h-3" />
+                            ) : (
+                              <AlertCircle className="w-3 h-3" />
+                            )}
+                            {conn.status}
+                          </span>
+                        </td>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-mono text-slate-400 whitespace-nowrap">
+                          {conn.lastSyncedAt
+                            ? new Date(conn.lastSyncedAt).toLocaleString([], {
+                                dateStyle: "short",
+                                timeStyle: "short",
+                              })
+                            : "Never"}
+                        </td>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 text-right space-x-1.5 sm:space-x-2 whitespace-nowrap">
+                          <button
+                            onClick={() => handleTriggerSync(conn._id)}
+                            disabled={isSyncing}
+                            className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-brand-600/30 border border-brand-500/40 text-brand-300 hover:text-white hover:bg-brand-600/60 text-[11px] font-semibold transition-all inline-flex items-center gap-1 disabled:opacity-50"
+                          >
+                            <RefreshCw
+                              className={`w-3 h-3 ${isSyncing ? "animate-spin" : ""}`}
+                            />
+                            <span>{isSyncing ? "Syncing..." : "Sync"}</span>
                           </button>
-                        )} */}
-                        <button
-                          onClick={() => handleTriggerSync(conn._id)}
-                          disabled={isSyncing}
-                          className="px-3 py-1.5 rounded-lg bg-brand-600/30 border border-brand-500/40 text-brand-300 hover:text-white hover:bg-brand-600/60 text-[11px] font-semibold transition-all inline-flex items-center gap-1 disabled:opacity-50"
-                        >
-                          <RefreshCw
-                            className={`w-3 h-3 ${isSyncing ? "animate-spin" : ""}`}
-                          />
-                          {isSyncing ? "Syncing..." : "Sync Now"}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteConnection(conn._id)}
-                          className="p-1.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 transition-all"
-                          title="Disconnect Integration"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                          <button
+                            onClick={() => handleDeleteConnection(conn._id)}
+                            className="p-1.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 transition-all inline-flex items-center justify-center"
+                            title="Disconnect Integration"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

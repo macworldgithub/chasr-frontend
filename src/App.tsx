@@ -15,6 +15,7 @@ import { OAuthCallback } from './pages/OAuthCallback';
 
 const ProtectedLayout: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   if (isLoading) {
     return (
@@ -29,11 +30,23 @@ const ProtectedLayout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-[#0b0f19]">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        <main className="flex-1 ml-64 overflow-y-auto">
+    <div className="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100">
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 lg:hidden transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar (drawer on mobile, fixed on desktop) */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 w-full">
+        <Header onMenuClick={() => setSidebarOpen(true)} />
+        <main className="flex-1 lg:ml-64 overflow-y-auto min-w-0">
           <Outlet />
         </main>
       </div>
