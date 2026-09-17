@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
 
-const HOME_URL = 'http://localhost:5173/';
+const HOME_URL = window.location.origin;
 
 export const OAuthCallback: React.FC = () => {
   const navigate = useNavigate();
